@@ -97,8 +97,32 @@ fragment Product on Product {
   descriptionHtml
   availableForSale
   options {
+    id
     name
     values
+    optionValues {
+      id
+      name
+      swatch {
+        color
+        image {
+          id
+          alt
+          mediaContentType
+          presentation {
+            id
+            asJson
+          }
+          previewImage {
+            id
+            url
+            width
+            height
+            altText
+          }
+        }
+      }
+    }
   }
   selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
     ...ProductVariant
