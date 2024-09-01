@@ -4,6 +4,13 @@ import {VariantSelector, ShopPayButton, useAnalytics} from '@shopify/hydrogen';
 
 const ProductForm = ({product, selectedVariant, variants, storeDomain}) => {
   const {publish, shop, cart, prevCart} = useAnalytics();
+
+  // Create a map of option names to their swatch values
+  const swatchMap = product.options.reduce((acc, opt) => {
+    acc[opt.name] = opt.optionValues.map((v) => v.swatch);
+    return acc;
+  }, {});
+
   return (
     <div className="grid gap-6">
       <VariantSelector
@@ -11,7 +18,18 @@ const ProductForm = ({product, selectedVariant, variants, storeDomain}) => {
         options={product.options}
         variants={variants}
       >
-        {({option}) => <ProductOptions key={option.name} option={option} />}
+        {({option}) => (
+          <ProductOptions
+            key={option.name}
+            option={{
+              ...option,
+              values: option.values.map((item, index) => ({
+                ...item,
+                swatch: swatchMap[option.name][index],
+              })),
+            }}
+          />
+        )}
       </VariantSelector>
       <div className="grid gap-4 mt-6">
         <AddToCartButton

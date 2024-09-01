@@ -84,6 +84,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
 //   parentResource
 // }
 // end
+
 export const PRODUCT_FRAGMENT = `#graphql
 fragment Product on Product {
   id
@@ -109,10 +110,6 @@ fragment Product on Product {
           id
           alt
           mediaContentType
-          presentation {
-            id
-            asJson
-          }
           previewImage {
             id
             url

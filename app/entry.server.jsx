@@ -22,6 +22,7 @@ export default async function handleRequest(
       'http://localhost:*',
       'https://images.unsplash.com',
     ],
+    frameSrc: ["'self'", 'https://www.youtube.com/'],
   });
 
   const body = await renderToReadableStream(

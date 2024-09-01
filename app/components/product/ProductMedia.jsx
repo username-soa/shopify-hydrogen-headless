@@ -43,7 +43,7 @@ const ProductMedia = ({data, inView}) => {
 
   return (
     <div
-      tabIndex={-1}
+      // tabIndex={-1}
       className="md:flex md:flex-col relative md:gap-[.11rem] grid gap-0 grid-flow-col auto-cols-[100%] snap-x snap-mandatory overflow-y-hidden overflow-x-scroll md:overflow-y-auto md:overflow-x-auto customScroll"
     >
       {/* Slides */}
@@ -72,7 +72,10 @@ const ProductMedia = ({data, inView}) => {
           <div
             key={`product-media-${index}`}
             id={`image-indicator-${index}`}
-            className="flex snap-center pointer-events-none aspect-[3/4] bg-primary/5 product-image-container"
+            className={clsx(
+              'flex snap-center aspect-[3/4] bg-primary/5 product-image-container',
+              med.mediaContentType === 'IMAGE' && 'pointer-events-none',
+            )}
           >
             <MediaFile
               className="relative flex w-full shrink-0 grow-0 select-none object-cover"
