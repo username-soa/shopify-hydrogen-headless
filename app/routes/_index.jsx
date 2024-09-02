@@ -1,11 +1,15 @@
+import {
+  FEATURED_COLLECTIONS_QUERY,
+  HOMEPAGE_FEATURED_PRODUCTS_QUERY,
+} from '~/lib/shopify/queries/home';
 import Hero from '~/components/home/Hero';
 import {defer} from '@shopify/remix-oxygen';
 import {seoPayload} from '~/lib/seo.server';
 import About from '~/components/home/About';
 import {getSeoMeta} from '@shopify/hydrogen';
 import {useLoaderData} from '@remix-run/react';
+import Container from '~/components/ui/Container';
 import TrendingProducts from '~/components/home/TrendingProducts';
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/shopify/fragments/product';
 import FeaturedCollections from '~/components/home/FeaturedCollections';
 
 export async function loader(args) {
@@ -71,53 +75,13 @@ export default function Homepage() {
   return (
     <div className="md:gap-10 gap-4 flex flex-col">
       <Hero data={shop} />
-      <div className="2xl:container w-full mx-auto sm:py-6 py-4 px-4 sm:px-6 md:px-20 lg:px-32 md:gap-16 gap-10 flex flex-col">
+      <Container className="sm:py-6 py-4 md:gap-16 gap-10 flex flex-col">
         <About />
         <TrendingProducts data={featuredProducts} />
         <FeaturedCollections data={featuredCollections} />
         {/* instagram section */}
         <div className="">instagram section</div>
-        {/* newsletter section */}
-        <div className="">newsletter section</div>
-      </div>
+      </Container>
     </div>
   );
 }
-
-export const FEATURED_COLLECTIONS_QUERY = `#graphql
-  query homepageFeaturedCollections($country: CountryCode, $language: LanguageCode)
-  @inContext(country: $country, language: $language) {
-    collections(
-      first: 2,
-      sortKey: UPDATED_AT
-    ) {
-      nodes {
-        id
-        title
-        handle
-        image {
-          altText
-          width
-          height
-          url
-        }
-      }
-    }
-    shop {
-      name
-      description
-    }
-  }
-`;
-
-export const HOMEPAGE_FEATURED_PRODUCTS_QUERY = `#graphql
-  query homepageFeaturedProducts($country: CountryCode, $language: LanguageCode)
-  @inContext(country: $country, language: $language) {
-    products(first: 3) {
-      nodes {
-        ...ProductCard
-      }
-    }
-  }
-  ${PRODUCT_CARD_FRAGMENT}
-`;
