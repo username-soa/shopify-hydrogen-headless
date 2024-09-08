@@ -9,6 +9,7 @@ import {
   RECOMMENDED_PRODUCTS_QUERY,
 } from '~/lib/shopify/queries/product';
 import invariant from 'tiny-invariant';
+import {useEffect, useState} from 'react';
 import {seoPayload} from '~/lib/seo.server';
 import {getVariantUrl} from '~/lib/variants';
 import {useLoaderData} from '@remix-run/react';
@@ -19,7 +20,6 @@ import ProductMain from '~/components/product/ProductMain';
 import ProductMedia from '~/components/product/ProductMedia';
 import RelatedProducts from '~/components/product/RelatedProducts';
 import FloatingAddToCart from '~/components/product/FloatingAddToCart';
-import {useEffect} from 'react';
 
 export async function loader(args) {
   const {handle} = args.params;
@@ -140,16 +140,23 @@ export default function Product() {
   const [ref2, inView2] = useInView({
     threshold: 0,
   });
-  console.log('inView2 is :', inView2);
+  const [showFloatingCart, setShowFloatingCart] = useState(false);
   const {product, variants, recommended, storeDomain} = useLoaderData();
   const {selectedVariant} = product;
-  // useEffect(()=>{
 
-  // }, [])
+  // this was added to hide the visual bug where  the component "FloatingAddToCart" flashes for a split second on page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowFloatingCart(!inView2);
+    }, 100); // Small delay to ensure layout is complete
+
+    return () => clearTimeout(timer);
+  }, [inView2]);
+
   return (
     <>
       {/* min-h-screen */}
-      <div className="grid md:grid-cols-2 grid-cols-1  min-h-screen" ref={ref2}>
+      <div className="grid md:grid-cols-2 grid-cols-1 min-h-screen" ref={ref2}>
         <ProductMedia data={product} inView={inView} />
         <div
           ref={ref}
@@ -163,9 +170,9 @@ export default function Product() {
           />
         </div>
       </div>
-      {/* TODO: fix te visual bug where in first page load the shows abruptly when the layout is not fully drawn and the inView2=false */}
+
       <AnimatePresence mode="wait">
-        {!inView2 && (
+        {showFloatingCart && (
           <FloatingAddToCart
             storeDomain={storeDomain}
             selectedVariant={selectedVariant}

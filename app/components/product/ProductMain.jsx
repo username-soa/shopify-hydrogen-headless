@@ -7,7 +7,7 @@ const ProductMain = ({selectedVariant, product, variants, storeDomain}) => {
   const {title, vendor, availableForSale, descriptionHtml} = product;
 
   return (
-    <div className="md:p-12 py-8 px-4 md:max-w-[560px] flex gap-4 flex-col">
+    <div className="lg:p-12 md:p-8 py-8 px-4 md:max-w-[560px] flex gap-4 flex-col">
       <div className="grid gap-3 border-b border-gray-200 pb-3 ">
         {/* Sold out */}
         {!availableForSale && (

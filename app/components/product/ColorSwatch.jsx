@@ -11,7 +11,6 @@ const ColorSwatch = ({
   replace = true,
   isAvailable = true,
 }) => {
-  console.log('ColorSwatch isActive : ', isActive);
   return (
     <div
       className={clsx(!isAvailable && 'cursor-not-allowed', 'group relative')}
