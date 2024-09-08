@@ -34,7 +34,7 @@ const Header = ({data, isLoggedIn}) => {
 
   return (
     <header className="sticky top-0 left-0 right-0 z-[999] py-2 2xl:container xl:w-[90%] md-w-[90%] w-[calc(100%-1rem)] mx-auto h-16">
-      <nav className="h-full md:px-5 px-3 grid grid-cols-2 items-center lg:grid-cols-[1fr_auto_1fr] gap-4 md:text-xl bg-blurry backdrop-blur-lg backdrop-saturate-150 rounded-2xl border border-border-color">
+      <nav className="h-full md:px-5 px-3 grid grid-cols-[1fr_auto] items-center lg:grid-cols-[1fr_auto_1fr] gap-4 md:text-xl bg-blurry backdrop-blur-lg backdrop-saturate-150 rounded-2xl border border-border-color">
         <ul className="gap-4 lg:flex hidden">
           {headerMenu?.items.map((link, index) => {
             return (
@@ -63,7 +63,7 @@ const Header = ({data, isLoggedIn}) => {
             prefetch="intent"
             to="/"
             end
-            className="text-xl flex items-center font-bold"
+            className="md:text-xl text-base flex items-center font-bold"
           >
             {shop.name}
           </NavLink>

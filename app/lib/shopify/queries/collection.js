@@ -29,13 +29,48 @@ export const COLLECTION_QUERY = `#graphql
         ) {
             filters {
                 id
-                label
                 type
+                label
+                presentation
                 values {
                   id
                   label
                   count
                   input
+                  image {
+                    id
+                    alt
+                    mediaContentType
+                    image {
+                        id
+                        url
+                        width
+                        height
+                        altText
+                    }
+                    previewImage {
+                      id
+                      url
+                      width
+                      height
+                      altText
+                    }
+                  }
+                  swatch {
+                    color
+                    image {
+                      id
+                      alt
+                      mediaContentType
+                      previewImage {
+                        id
+                        url
+                        width
+                        height
+                        altText
+                      }
+                    }
+                  }
                 }
             }
             nodes {

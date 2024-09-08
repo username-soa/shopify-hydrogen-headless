@@ -10,6 +10,7 @@ import {twMerge} from 'tailwind-merge';
 import {useState, useMemo} from 'react';
 import {FILTER_URL_PREFIX} from './Filters';
 import CloseIcon from '~/components/icons/CloseIcon';
+import ColorSwatch from '~/components/product/ColorSwatch';
 
 const PRICE_RANGE_FILTER_DEBOUNCE = 500;
 
@@ -18,23 +19,45 @@ const FilterItem = ({filter, appliedFilters}) => {
   const [params] = useSearchParams();
 
   return (
-    <div className="md:flex-1 text-xs max-w-[150px]">
-      <div className="text-sm text-[#767676] pb-4">{filter.label}</div>
-      <ul className="gap-1 flex flex-col justify-start ">
-        {filter.values?.map((item, index) => {
-          return (
-            <li key={`filter-value-${index}`} className="pb-4 pl-[.6rem]">
-              {filterMarkup(
-                filter,
-                item,
-                params,
-                location,
-                appliedFilters,
-                item,
-              )}
-            </li>
-          );
-        })}
+    <div className="md:flex-1 text-xs md:max-w-[150px]">
+      <div className="text-sm text-[#767676] pb-4 capitalize">
+        {filter.label}
+      </div>
+      <ul
+        className={twMerge(
+          clsx(
+            'gap-1 flex flex-col justify-start',
+            (filter.presentation === 'SWATCH' ||
+              filter.presentation === 'IMAGE') &&
+              'flex-row gap-y-2 flex-wrap',
+          ),
+        )}
+      >
+        {filter.presentation === 'SWATCH' || filter.presentation === 'IMAGE'
+          ? filter.values?.map((item, index) => {
+              const isActive =
+                appliedFilters.find(
+                  (f) => f.label.toLowerCase() === item.label.toLowerCase(),
+                ) !== undefined;
+              return (
+                <ColorSwatch
+                  replace={false}
+                  value={item.label}
+                  isActive={isActive}
+                  color={item.swatch.color}
+                  image={item.swatch.image}
+                  key={`color-swatch-${index}`}
+                  to={getFilterLink(item.input, params, location)}
+                />
+              );
+            })
+          : filter.values?.map((item, index) => {
+              return (
+                <li key={`filter-value-${index}`} className="pb-4 pl-[.6rem]">
+                  {filterMarkup(filter, item, params, location, appliedFilters)}
+                </li>
+              );
+            })}
       </ul>
     </div>
   );
@@ -48,7 +71,7 @@ export const AppliedFilterItem = ({filter}) => {
   return (
     <Link
       to={getAppliedFilterLink(filter, params, location)}
-      className="flex gap-2 items-center px-2 py-1 border border-gray-200 rounded-full gap text-xs"
+      className="flex gap-2 items-center px-2 py-1 border border-gray-200 rounded-full gap text-xs capitalize"
       key={`${filter.label}-${JSON.stringify(filter.filter)}`}
     >
       <span className="flex-grow">{filter.label}</span>
@@ -87,7 +110,7 @@ function getFilterLink(rawInput, params, location) {
   const newParams = filterInputToParams(rawInput, paramsClone);
   return `${location.pathname}?${newParams.toString()}`;
 }
-function filterMarkup(filter, option, params, location, appliedFilters, item) {
+function filterMarkup(filter, option, params, location, appliedFilters) {
   switch (filter.type) {
     case 'PRICE_RANGE':
       const priceFilter = params.get(`${FILTER_URL_PREFIX}price`);
@@ -107,7 +130,7 @@ function filterMarkup(filter, option, params, location, appliedFilters, item) {
             clsx(
               'filter-link focus:underline hover:underline',
               appliedFilters.find(
-                (f) => f.label.toLowerCase() === item.label.toLowerCase(),
+                (f) => f.label.toLowerCase() === option.label.toLowerCase(),
               ) !== undefined && 'active-link',
             ),
           )}

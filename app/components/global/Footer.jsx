@@ -23,9 +23,9 @@ const Footer = ({data}) => {
             to="/"
             className="font-bold transition-opacity hover:opacity-80"
           >
-            <h2 className="text-3xl text-black">{shop.name}</h2>
+            <h2 className="md:text-3xl text-xl text-black">{shop.name}</h2>
           </NavLink>
-          <p>{shop.description}</p>
+          <p className="text-sm leading-relaxed">{shop.description}</p>
         </div>
         <div className="flex w-full flex-wrap justify-between gap-5 md:w-[unset] md:flex-[0_1_623px]">
           <div className="min-w-[110px]">

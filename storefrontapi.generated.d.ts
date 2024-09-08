@@ -697,12 +697,52 @@ export type CollectionQuery = {
     > & {
       products: {
         filters: Array<
-          Pick<StorefrontAPI.Filter, 'id' | 'label' | 'type'> & {
+          Pick<
+            StorefrontAPI.Filter,
+            'id' | 'type' | 'label' | 'presentation'
+          > & {
             values: Array<
               Pick<
                 StorefrontAPI.FilterValue,
                 'id' | 'label' | 'count' | 'input'
-              >
+              > & {
+                image?: StorefrontAPI.Maybe<
+                  Pick<
+                    StorefrontAPI.MediaImage,
+                    'id' | 'alt' | 'mediaContentType'
+                  > & {
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'id' | 'url' | 'width' | 'height' | 'altText'
+                      >
+                    >;
+                    previewImage?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'id' | 'url' | 'width' | 'height' | 'altText'
+                      >
+                    >;
+                  }
+                >;
+                swatch?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Swatch, 'color'> & {
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.MediaImage,
+                        'id' | 'alt' | 'mediaContentType'
+                      > & {
+                        previewImage?: StorefrontAPI.Maybe<
+                          Pick<
+                            StorefrontAPI.Image,
+                            'id' | 'url' | 'width' | 'height' | 'altText'
+                          >
+                        >;
+                      }
+                    >;
+                  }
+                >;
+              }
             >;
           }
         >;
@@ -1788,7 +1828,7 @@ interface GeneratedQueryTypes {
     return: ArticleQuery;
     variables: ArticleQueryVariables;
   };
-  '#graphql\n  #graphql\n    fragment ProductCard on Product {\n        __typename\n        id\n        title\n        handle\n        updatedAt\n        publishedAt\n        availableForSale\n        trackingParameters\n        featuredImage {\n            ...image\n        }\n        variants(first: 1) {\n            nodes {\n              ...ProductVariant\n            }\n        }\n    }\n    #graphql\n  fragment image on Image {\n    url\n    altText\n    width\n    height\n  }\n\n    #graphql\nfragment ProductVariant on ProductVariant {\n  availableForSale\n  compareAtPrice {\n    amount\n    currencyCode\n  }\n  id\n  image {\n    __typename\n    id\n    url\n    altText\n    width\n    height\n  }\n  price {\n    amount\n    currencyCode\n  }\n  product {\n    title\n    handle\n  }\n  selectedOptions {\n    name\n    value\n  }\n  sku\n  title\n  unitPrice {\n    amount\n    currencyCode\n  }\n}\n\n\n  #graphql\n    fragment CollectionItem on Collection {\n        id\n        title\n        handle\n        description\n        descriptionHtml\n        seo {\n        ...seo\n        }\n        image {\n          url\n          altText\n          width\n          height\n        }\n        updatedAt\n    }\n  #graphql\n  fragment seo on SEO {\n    title\n    description\n  }\n\n\n  query Collection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n        ...CollectionItem\n        products(\n            first: $first,\n            last: $last,\n            before: $startCursor,\n            after: $endCursor\n            filters: $filters,\n            sortKey: $sortKey,\n            reverse: $reverse\n        ) {\n            filters {\n                id\n                label\n                type\n                values {\n                  id\n                  label\n                  count\n                  input\n                }\n            }\n            nodes {\n                ...ProductCard\n            }\n            pageInfo {\n                endCursor\n                startCursor\n                hasNextPage\n                hasPreviousPage\n            }\n        }\n    }\n    collections(first: 100) {\n        edges {\n          node {\n            title\n            handle\n          }\n        }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n    fragment ProductCard on Product {\n        __typename\n        id\n        title\n        handle\n        updatedAt\n        publishedAt\n        availableForSale\n        trackingParameters\n        featuredImage {\n            ...image\n        }\n        variants(first: 1) {\n            nodes {\n              ...ProductVariant\n            }\n        }\n    }\n    #graphql\n  fragment image on Image {\n    url\n    altText\n    width\n    height\n  }\n\n    #graphql\nfragment ProductVariant on ProductVariant {\n  availableForSale\n  compareAtPrice {\n    amount\n    currencyCode\n  }\n  id\n  image {\n    __typename\n    id\n    url\n    altText\n    width\n    height\n  }\n  price {\n    amount\n    currencyCode\n  }\n  product {\n    title\n    handle\n  }\n  selectedOptions {\n    name\n    value\n  }\n  sku\n  title\n  unitPrice {\n    amount\n    currencyCode\n  }\n}\n\n\n  #graphql\n    fragment CollectionItem on Collection {\n        id\n        title\n        handle\n        description\n        descriptionHtml\n        seo {\n        ...seo\n        }\n        image {\n          url\n          altText\n          width\n          height\n        }\n        updatedAt\n    }\n  #graphql\n  fragment seo on SEO {\n    title\n    description\n  }\n\n\n  query Collection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys!\n    $reverse: Boolean\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n        ...CollectionItem\n        products(\n            first: $first,\n            last: $last,\n            before: $startCursor,\n            after: $endCursor\n            filters: $filters,\n            sortKey: $sortKey,\n            reverse: $reverse\n        ) {\n            filters {\n                id\n                type\n                label\n                presentation\n                values {\n                  id\n                  label\n                  count\n                  input\n                  image {\n                    id\n                    alt\n                    mediaContentType\n                    image {\n                        id\n                        url\n                        width\n                        height\n                        altText\n                    }\n                    previewImage {\n                      id\n                      url\n                      width\n                      height\n                      altText\n                    }\n                  }\n                  swatch {\n                    color\n                    image {\n                      id\n                      alt\n                      mediaContentType\n                      previewImage {\n                        id\n                        url\n                        width\n                        height\n                        altText\n                      }\n                    }\n                  }\n                }\n            }\n            nodes {\n                ...ProductCard\n            }\n            pageInfo {\n                endCursor\n                startCursor\n                hasNextPage\n                hasPreviousPage\n            }\n        }\n    }\n    collections(first: 100) {\n        edges {\n          node {\n            title\n            handle\n          }\n        }\n    }\n  }\n': {
     return: CollectionQuery;
     variables: CollectionQueryVariables;
   };
