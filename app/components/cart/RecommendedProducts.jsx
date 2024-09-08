@@ -4,11 +4,11 @@ import {useEffect, useId, useMemo} from 'react';
 import ProductCard from '../product/ProductCard';
 
 const RecommendedProducts = ({
+  query,
+  onClose,
+  reverse,
   count = 4,
   layout = 'drawer',
-  onClose,
-  query,
-  reverse,
   sortKey = 'BEST_SELLING',
 }) => {
   const id = useId();
@@ -32,7 +32,7 @@ const RecommendedProducts = ({
 
   if (!data?.products) {
     return (
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2 gap-y-4">
         {[...new Array(count)].map((_, i) => (
           <div key={`${id + i}`} className="grid gap-2">
             <Skeleton className="aspect-[3/4]" />
